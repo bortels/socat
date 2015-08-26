@@ -1,0 +1,18 @@
+#!/usr/bin/env perl
+
+$c = shift @ARGV;
+$p = shift @ARGV;
+
+if ($p == '') {
+   print "Syntax: docker-expose CONTAINER PORT\n";
+   print "        where CONTAINER is the name/id of a container EXPOSEing ports\n";
+   print "        and PORT is the port to expose.\n";
+   print "        The port will be bound to 0.0.0.0 on the docker host.\n";
+   exit;
+}
+
+$name = join('_', 'expose', $p, 'on', $c);
+$cmd = "docker run -d --name '$name' --link $c:exposeme -p $p:$p socat -dddd TCP-LISTEN:$p,reuseaddr,fork TCP:exposeme:$p";
+print $cmd . "\n";
+system($cmd);
+print "Exposed port $p on container $c using $name\n";
