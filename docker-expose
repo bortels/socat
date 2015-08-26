@@ -12,7 +12,7 @@ if ($p == '') {
 }
 
 $name = join('_', 'expose', $p, 'on', $c);
-$cmd = "docker run -d --name '$name' --link $c:exposeme -p $p:$p socat -dddd TCP-LISTEN:$p,reuseaddr,fork TCP:exposeme:$p";
+$cmd = "docker run -d --name '$name' --link $c:exposeme -p $p:$p bortels/socat -dddd TCP-LISTEN:$p,reuseaddr,fork TCP:exposeme:$p";
 print $cmd . "\n";
 system($cmd);
 print "Exposed port $p on container $c using $name\n";
